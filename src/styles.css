@@ -51,6 +51,12 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-primary-glow: var(--primary-glow);
+  --color-gold: var(--gold);
+  --color-navy: var(--navy);
+  --color-navy-foreground: var(--navy-foreground);
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -62,26 +68,34 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 1rem;
+  --background: oklch(0.985 0.006 250);
+  --foreground: oklch(0.22 0.05 258);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.22 0.05 258);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.22 0.05 258);
+  --primary: oklch(0.52 0.19 258);
+  --primary-foreground: oklch(0.99 0 0);
+  --primary-glow: oklch(0.68 0.16 235);
+  --secondary: oklch(0.95 0.025 250);
+  --secondary-foreground: oklch(0.3 0.1 258);
+  --muted: oklch(0.96 0.012 250);
+  --muted-foreground: oklch(0.5 0.03 258);
+  --accent: oklch(0.78 0.14 195);
+  --accent-foreground: oklch(0.22 0.05 258);
+  --gold: oklch(0.8 0.15 80);
+  --navy: oklch(0.24 0.08 262);
+  --navy-foreground: oklch(0.97 0.01 250);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.91 0.018 252);
+  --input: oklch(0.91 0.018 252);
+  --ring: oklch(0.52 0.19 258);
+  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
+  --gradient-hero: linear-gradient(105deg, oklch(0.2 0.08 262 / 0.92) 0%, oklch(0.3 0.12 258 / 0.7) 45%, oklch(0.3 0.12 258 / 0.1) 100%);
+  --shadow-soft: 0 10px 30px -12px oklch(0.4 0.12 258 / 0.18);
+  --shadow-elegant: 0 25px 60px -20px oklch(0.45 0.19 258 / 0.4);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -138,7 +152,38 @@
   }
 
   body {
+    font-family: var(--font-sans);
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
 }
+
+@utility bg-gradient-primary { background-image: var(--gradient-primary); }
+@utility bg-gradient-hero { background-image: var(--gradient-hero); }
+@utility shadow-soft { box-shadow: var(--shadow-soft); }
+@utility shadow-elegant { box-shadow: var(--shadow-elegant); }
+@utility text-gradient {
+  background-image: linear-gradient(90deg, var(--primary-glow), var(--accent));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+@utility glass {
+  background: oklch(1 0 0 / 0.12);
+  backdrop-filter: blur(14px);
+  border: 1px solid oklch(1 0 0 / 0.25);
+}
+
+@keyframes fade-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes ken-burns { from { transform: scale(1.05); } to { transform: scale(1.18) translate(-1%, -1%); } }
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 oklch(0.68 0.16 235 / 0.6); } 100% { box-shadow: 0 0 0 18px oklch(0.68 0.16 235 / 0); } }
+
+@utility animate-fade-up { animation: fade-up 0.9s cubic-bezier(.2,.7,.2,1) both; }
+@utility animate-float { animation: float 6s ease-in-out infinite; }
+@utility animate-marquee { animation: marquee 40s linear infinite; }
+@utility animate-ken-burns { animation: ken-burns 22s ease-in-out infinite alternate; }
+@utility animate-pulse-ring { animation: pulse-ring 2s infinite; }
+
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
